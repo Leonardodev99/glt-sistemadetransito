@@ -1,6 +1,6 @@
 import Admin from '../models/Admin';
 
-class HomeController {
+class AdminController {
   async index(req, res) {
     const novoAdmin = await Admin.create({
       nome: 'João Silva',
@@ -13,4 +13,4 @@ class HomeController {
   }
 }
 
-export default new HomeController();
+export default new AdminController();

@@ -17,3 +17,7 @@ build/
 # Sistema/Editor
 .DS_Store
 .vscode/
+
+#Extensoes de imagem
+*.jpg
+*.png
