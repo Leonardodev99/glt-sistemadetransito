@@ -1,3 +1,4 @@
+import { ValidationError } from 'sequelize';
 import Admin from '../models/Admin';
 
 class AdminController {
@@ -12,9 +13,20 @@ class AdminController {
         nome, nip, email, senha_hash
       });
 
-      return res.status(201).json(admin);
+      // transforma em objeto puro e remove senha_hash
+      const adminSafe = admin.get({ plain: true });
+      delete adminSafe.senha_hash;
+
+      return res.status(201).json(adminSafe);
     } catch (e) {
       console.error(e);
+
+      // Verifica se o erro é de validação do Sequelize
+      if (e instanceof ValidationError) {
+        return res.status(400).json({
+          errors: e.errors.map((err) => err.message) // pega as mensagens personalizadas
+        });
+      }
       return res.status(400).json({ error: e.message });
     }
   }
@@ -22,9 +34,7 @@ class AdminController {
   // Listar todos os admins
   async index(req, res) {
     try {
-      const admins = await Admin.findAll({
-        attributes: ['id_admin', 'nome', 'nip', 'email', 'created_at', 'updated_at']
-      });
+      const admins = await Admin.findAll();
 
       return res.json(admins);
     } catch (e) {
@@ -36,9 +46,7 @@ class AdminController {
   async show(req, res) {
     try {
       const { id } = req.params;
-      const admin = await Admin.findByPk(id, {
-        attributes: ['id_admin', 'nome', 'nip', 'email', 'created_at', 'updated_at']
-      });
+      const admin = await Admin.findByPk(id);
 
       if (!admin) {
         return res.status(404).json({ error: 'Admin not found' });
