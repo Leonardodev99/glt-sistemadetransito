@@ -16,6 +16,7 @@ module.exports = {
     'import/prefer-default-export': 'off', // permite exportar só funções nomeadas
     'comma-dangle': ['error', 'never'], // remove vírgula no fim de objetos/arrays
     'import/no-extraneous-dependencies': 'off',
-    'import/first': 'off'
+    'import/first': 'off',
+    camelcase: 'off'
   }
 };
