@@ -8,6 +8,7 @@ import express from 'express';
 
 import homeRoutes from './src/routes/homeRoutes';
 import adminRoutes from './src/routes/adminRoutes';
+import agenteRoutes from './src/routes/agenteRoutes';
 
 class App {
   constructor() {
@@ -24,6 +25,7 @@ class App {
   routes() {
     this.app.use('/', homeRoutes);
     this.app.use('/admins', adminRoutes);
+    this.app.use('/agentes', agenteRoutes);
   }
 }
 

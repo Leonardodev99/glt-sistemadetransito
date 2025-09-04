@@ -60,4 +60,11 @@ export default class Admin extends Model {
 
     return this;
   }
+
+  static associate(models) {
+    this.hasMany(models.Agente, {
+      foreignKey: 'id_admin',
+      as: 'agentes' // admin.getAgentes()
+    });
+  }
 }
