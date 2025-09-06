@@ -17,6 +17,7 @@ module.exports = {
     'comma-dangle': ['error', 'never'], // remove vírgula no fim de objetos/arrays
     'import/no-extraneous-dependencies': 'off',
     'import/first': 'off',
-    camelcase: 'off'
+    camelcase: 'off',
+    'max-len': 'off'
   }
 };
