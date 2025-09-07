@@ -10,6 +10,7 @@ import homeRoutes from './src/routes/homeRoutes';
 import adminRoutes from './src/routes/adminRoutes';
 import agenteRoutes from './src/routes/agenteRoutes';
 import condutorRoutes from './src/routes/condutorRoutes';
+import veiculoRoutes from './src/routes/veiculoRoutes';
 
 class App {
   constructor() {
@@ -28,6 +29,7 @@ class App {
     this.app.use('/admins', adminRoutes);
     this.app.use('/agentes', agenteRoutes);
     this.app.use('/condutores', condutorRoutes);
+    this.app.use('/veiculos', veiculoRoutes);
   }
 }
 

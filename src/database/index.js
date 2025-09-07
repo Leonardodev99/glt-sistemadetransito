@@ -3,8 +3,9 @@ import databaseConfig from '../config/database';
 import Admin from '../models/Admin';
 import Agente from '../models/Agente';
 import Condutor from '../models/Condutor';
+import Veiculo from '../models/Veiculo';
 
-const models = [Admin, Agente, Condutor];
+const models = [Admin, Agente, Condutor, Veiculo];
 
 const connection = new Sequelize(databaseConfig);
 

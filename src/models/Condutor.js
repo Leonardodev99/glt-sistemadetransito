@@ -110,4 +110,11 @@ export default class Condutor extends Model {
 
     return this;
   }
+
+  static associate(models) {
+    this.hasMany(models.Veiculo, {
+      foreignKey: 'id_condutor',
+      as: 'veiculos' // condutor.getVeiculos()
+    });
+  }
 }
