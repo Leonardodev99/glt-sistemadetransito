@@ -72,7 +72,7 @@ export default class Agente extends Model {
         sequelize,
         tableName: 'agentes',
         defaultScope: {
-        // 🚀 nunca retorna senha_hash por padrão
+        // nunca retorna senha_hash por padrão
           attributes: { exclude: ['senha_hash'] }
         }
       }
@@ -85,6 +85,11 @@ export default class Agente extends Model {
     this.belongsTo(models.Admin, {
       foreignKey: 'id_admin',
       as: 'admin' // agente.getAdmin()
+    });
+
+    this.hasMany(models.Ocorrencia, {
+      foreignKey: 'id_agente',
+      as: 'ocorrencias' // ocorrencia.getOcorrencias()
     });
   }
 }

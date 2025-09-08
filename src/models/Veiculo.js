@@ -50,5 +50,10 @@ export default class Veiculo extends Model {
       foreignKey: 'id_condutor',
       as: 'condutor'
     });
+
+    this.hasMany(models.Ocorrencia, {
+      foreignKey: 'id_veiculo',
+      as: 'ocorrencias' // ocorrencia.getOcorrencias()
+    });
   }
 }
