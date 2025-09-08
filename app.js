@@ -12,6 +12,7 @@ import agenteRoutes from './src/routes/agenteRoutes';
 import condutorRoutes from './src/routes/condutorRoutes';
 import veiculoRoutes from './src/routes/veiculoRoutes';
 import ocorrenciaRoutes from './src/routes/ocorrenciaRoutes';
+import multaRoutes from './src/routes/multaRoutes';
 
 class App {
   constructor() {
@@ -32,6 +33,7 @@ class App {
     this.app.use('/condutores', condutorRoutes);
     this.app.use('/veiculos', veiculoRoutes);
     this.app.use('/ocorrencias', ocorrenciaRoutes);
+    this.app.use('/multas', multaRoutes);
   }
 }
 

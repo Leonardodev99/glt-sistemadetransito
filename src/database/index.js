@@ -5,8 +5,9 @@ import Agente from '../models/Agente';
 import Condutor from '../models/Condutor';
 import Veiculo from '../models/Veiculo';
 import Ocorrencia from '../models/Ocorrencia';
+import Multa from '../models/Multa';
 
-const models = [Admin, Agente, Condutor, Veiculo, Ocorrencia];
+const models = [Admin, Agente, Condutor, Veiculo, Ocorrencia, Multa];
 
 const connection = new Sequelize(databaseConfig);
 
