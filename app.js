@@ -13,6 +13,7 @@ import condutorRoutes from './src/routes/condutorRoutes';
 import veiculoRoutes from './src/routes/veiculoRoutes';
 import ocorrenciaRoutes from './src/routes/ocorrenciaRoutes';
 import multaRoutes from './src/routes/multaRoutes';
+import pagamentosRoutes from './src/routes/pagamentosRoutes';
 
 class App {
   constructor() {
@@ -34,6 +35,7 @@ class App {
     this.app.use('/veiculos', veiculoRoutes);
     this.app.use('/ocorrencias', ocorrenciaRoutes);
     this.app.use('/multas', multaRoutes);
+    this.app.use('/pagamentos', pagamentosRoutes);
   }
 }
 
