@@ -58,5 +58,10 @@ export default class Ocorrencia extends Model {
       foreignKey: 'id_veiculo',
       as: 'veiculo'
     });
+
+    this.hasMany(models.Multa, {
+      foreignKey: 'id_ocorrencia',
+      as: 'multas'
+    });
   }
 }
