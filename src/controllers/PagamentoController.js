@@ -6,7 +6,6 @@ class PagamentoController {
   async store(req, res) {
     try {
       const {
-        codigo_referencia,
         valor_pago,
         metodo_pagamento,
         status,
@@ -15,7 +14,6 @@ class PagamentoController {
       } = req.body;
 
       const pagamento = await Pagamento.create({
-        codigo_referencia,
         valor_pago,
         metodo_pagamento,
         status,
@@ -97,7 +95,6 @@ class PagamentoController {
       }
 
       const {
-        codigo_referencia,
         valor_pago,
         metodo_pagamento,
         status,
@@ -106,7 +103,6 @@ class PagamentoController {
       } = req.body;
 
       await pagamento.update({
-        codigo_referencia,
         valor_pago,
         metodo_pagamento,
         status,

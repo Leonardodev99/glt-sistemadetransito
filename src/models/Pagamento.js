@@ -10,12 +10,20 @@ export default class Pagamento extends Model {
           autoIncrement: true
         },
         codigo_referencia: {
-          type: Sequelize.STRING(50),
+          type: Sequelize.STRING(9), // agora limitado a 9 caracteres
           allowNull: false,
           unique: true,
+          defaultValue: () => String(Math.floor(Math.random() * 900000000) + 100000000),
           validate: {
             notEmpty: {
               msg: 'O código de referência é obrigatório'
+            },
+            isNumeric: {
+              msg: 'O código de referência deve conter apenas números'
+            },
+            len: {
+              args: [1, 9],
+              msg: 'O código de referência deve ter no máximo 9 dígitos'
             }
           }
         },
