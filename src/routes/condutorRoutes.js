@@ -20,4 +20,8 @@ router.put('/:id', upload.fields([
 
 router.delete('/:id', CondutorController.delete);
 
+router.post('/consultar-bi', CondutorController.consultarBilhete);
+
+router.post('/consultar-carta', CondutorController.consultarCarta);
+
 export default router;

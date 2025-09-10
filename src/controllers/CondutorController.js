@@ -1,4 +1,6 @@
 import { ValidationError } from 'sequelize';
+import path from 'path';
+import fs from 'fs';
 import Condutor from '../models/Condutor';
 
 class CondutorController {
@@ -130,6 +132,55 @@ class CondutorController {
       await condutor.destroy();
 
       return res.json({ message: 'Condutor deletado com sucesso' });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
+  // Consultar bilhete pelo número do BI
+  async consultarBilhete(req, res) {
+    try {
+      const { bi } = req.body;
+      if (!bi) return res.status(400).json({ error: 'Informe o número do BI' });
+
+      const condutor = await Condutor.findOne({ where: { bi } });
+      if (!condutor || !condutor.file_bi) {
+        return res.status(404).json({ error: 'Bilhete não encontrado' });
+      }
+
+      // Corrige para uploads/images
+      const filePath = path.resolve('uploads', 'images', condutor.file_bi);
+
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Arquivo não encontrado no servidor' });
+      }
+
+      return res.sendFile(filePath);
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
+  // Consultar carta de condução pelo número
+  async consultarCarta(req, res) {
+    try {
+      const { num_carta } = req.body;
+      if (!num_carta) return res.status(400).json({ error: 'Informe o número da carta de condução' });
+
+      const condutor = await Condutor.findOne({ where: { num_carta } });
+      if (!condutor || !condutor.file_carta) {
+        return res.status(404).json({ error: 'Carta de condução não encontrada' });
+      }
+
+      const filePath = path.resolve('uploads', 'images', condutor.file_carta);
+
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({
+          error: `Arquivo não encontrado no servidor em ${filePath}`
+        });
+      }
+
+      return res.sendFile(filePath);
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
