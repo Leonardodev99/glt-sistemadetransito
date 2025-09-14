@@ -34,6 +34,10 @@ export default class Veiculo extends Model {
         cor: {
           type: Sequelize.STRING,
           allowNull: false
+        },
+        file_livrete: {
+          type: Sequelize.STRING,
+          allowNull: true
         }
       },
       {

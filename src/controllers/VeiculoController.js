@@ -15,13 +15,18 @@ class VeiculoController {
         id_condutor
       } = req.body;
 
+      const file_livrete = req.files?.file_livrete
+        ? req.files.file_livrete[0].filename
+        : null;
+
       const veiculo = await Veiculo.create({
         matricula,
         num_livrete,
         marca,
         modelo,
         cor,
-        id_condutor
+        id_condutor,
+        file_livrete
       });
 
       return res.status(201).json(veiculo);
@@ -123,13 +128,18 @@ class VeiculoController {
         id_condutor
       } = req.body;
 
+      const file_livrete = req.files?.file_livrete
+        ? req.files.file_livrete[0].filename
+        : veiculo.file_livrete;
+
       await veiculo.update({
         matricula,
         num_livrete,
         marca,
         modelo,
         cor,
-        id_condutor
+        id_condutor,
+        file_livrete
       });
 
       return res.json(veiculo);
