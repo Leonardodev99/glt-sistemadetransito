@@ -6,16 +6,17 @@ class AdminController {
   async store(req, res) {
     try {
       const {
-        nome, nip, email, senha_hash
+        nome, nip, email, senha
       } = req.body;
 
       const admin = await Admin.create({
-        nome, nip, email, senha_hash
+        nome, nip, email, senha
       });
 
       // transforma em objeto puro e remove senha_hash
       const adminSafe = admin.get({ plain: true });
       delete adminSafe.senha_hash;
+      delete adminSafe.senha;
 
       return res.status(201).json(adminSafe);
     } catch (e) {
@@ -69,11 +70,16 @@ class AdminController {
       }
 
       const {
-        nome, nip, email, senha_hash
+        nome, nip, email, senha
       } = req.body;
       await admin.update({
-        nome, nip, email, senha_hash
+        nome, nip, email, senha
       });
+
+      // transforma em objeto puro e remove a senha e senha_hash
+      const adminSafe = admin.get({ plain: true });
+      delete adminSafe.senha_hash;
+      delete adminSafe.senha;
 
       return res.json(admin);
     } catch (e) {

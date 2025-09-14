@@ -18,6 +18,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/first': 'off',
     camelcase: 'off',
-    'max-len': 'off'
+    'max-len': 'off',
+    'no-param-reassign': 'off'
   }
 };

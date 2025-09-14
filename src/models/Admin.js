@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
 export default class Admin extends Model {
   static init(sequelize) {
@@ -47,6 +48,16 @@ export default class Admin extends Model {
       },
       senha_hash: {
         type: Sequelize.STRING
+      },
+      senha: {
+        type: Sequelize.VIRTUAL,
+        defaultValue: '',
+        validate: {
+          len: {
+            args: [6, 50],
+            msg: 'A senha precisa ter entre 6 a 50 caracteres'
+          }
+        }
       }
 
     }, {
@@ -56,6 +67,10 @@ export default class Admin extends Model {
         // 🚀 nunca retorna senha_hash por padrão
         attributes: { exclude: ['senha_hash'] }
       }
+    });
+
+    this.addHook('beforeSave', async (adim) => {
+      adim.senha_hash = await bcrypt.hash(adim.senha, 8);
     });
 
     return this;

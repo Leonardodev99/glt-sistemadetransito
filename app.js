@@ -15,6 +15,7 @@ import ocorrenciaRoutes from './src/routes/ocorrenciaRoutes';
 import multaRoutes from './src/routes/multaRoutes';
 import pagamentosRoutes from './src/routes/pagamentosRoutes';
 import reportRoutes from './src/routes/reportRoutes';
+import tokenRoutes from './src/routes/tokenRoutes';
 
 class App {
   constructor() {
@@ -38,6 +39,7 @@ class App {
     this.app.use('/multas', multaRoutes);
     this.app.use('/pagamentos', pagamentosRoutes);
     this.app.use('/relatorios', reportRoutes);
+    this.app.use('/tokens', tokenRoutes);
   }
 }
 
