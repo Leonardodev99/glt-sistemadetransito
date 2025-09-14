@@ -15,4 +15,6 @@ router.put('/:id', upload.fields([
 ]), VeiculoController.update); // Atualizar
 router.delete('/:id', VeiculoController.delete); // Deletar
 
+router.post('/consultar-veiculo', VeiculoController.consultarLivrete); // COnsultar livrete do veículo
+
 export default router;

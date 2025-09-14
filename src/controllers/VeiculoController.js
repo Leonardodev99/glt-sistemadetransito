@@ -1,4 +1,6 @@
 import { ValidationError } from 'sequelize';
+import path from 'path';
+import fs from 'fs';
 import Veiculo from '../models/Veiculo';
 import Condutor from '../models/Condutor';
 
@@ -110,6 +112,7 @@ class VeiculoController {
   }
 
   // Atualizar veículo
+  // Atualizar veículo
   async update(req, res) {
     try {
       const { id } = req.params;
@@ -119,6 +122,7 @@ class VeiculoController {
         return res.status(404).json({ error: 'Veículo não encontrado' });
       }
 
+      // Se não vier body, inicializa como objeto vazio
       const {
         matricula,
         num_livrete,
@@ -126,19 +130,22 @@ class VeiculoController {
         modelo,
         cor,
         id_condutor
-      } = req.body;
+      } = req.body || {};
 
+      // Atualiza apenas file_livrete se for enviado
       const file_livrete = req.files?.file_livrete
         ? req.files.file_livrete[0].filename
         : veiculo.file_livrete;
+      console.log('Arquivo recebido:', req.files);
+      console.log('file_livrete:', file_livrete);
 
       await veiculo.update({
-        matricula,
-        num_livrete,
-        marca,
-        modelo,
-        cor,
-        id_condutor,
+        matricula: matricula ?? veiculo.matricula,
+        num_livrete: num_livrete ?? veiculo.num_livrete,
+        marca: marca ?? veiculo.marca,
+        modelo: modelo ?? veiculo.modelo,
+        cor: cor ?? veiculo.cor,
+        id_condutor: id_condutor ?? veiculo.id_condutor,
         file_livrete
       });
 
@@ -166,6 +173,31 @@ class VeiculoController {
       await veiculo.destroy();
 
       return res.json({ message: 'Veículo deletado com sucesso' });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
+  // Consultar livrete pela matrícula do veículo
+  async consultarLivrete(req, res) {
+    try {
+      const { matricula } = req.body;
+      if (!matricula) return res.status(400).json({ error: 'Informe a matrícula do veículo' });
+
+      const veiculo = await Veiculo.findOne({ where: { matricula } });
+      if (!veiculo || !veiculo.file_livrete) {
+        return res.status(404).json({ error: 'Livrete não encontrado' });
+      }
+
+      const filePath = path.resolve('uploads', 'images', veiculo.file_livrete);
+
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({
+          error: `Arquivo não encontrado no servidor em ${filePath}`
+        });
+      }
+
+      return res.sendFile(filePath);
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
