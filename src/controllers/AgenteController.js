@@ -7,16 +7,17 @@ class AgenteController {
   async store(req, res) {
     try {
       const {
-        nome, bi, nip, email, senha_hash, status, id_admin
+        nome, bi, nip, email, senha, status, id_admin
       } = req.body;
 
       const agente = await Agente.create({
-        nome, bi, nip, email, senha_hash, status, id_admin
+        nome, bi, nip, email, senha, status, id_admin
       });
 
       // transforma em objeto puro e remove senha_hash
       const agenteSafe = agente.get({ plain: true });
       delete agenteSafe.senha_hash;
+      delete agenteSafe.senha;
 
       return res.status(201).json(agenteSafe);
     } catch (e) {
@@ -108,12 +109,17 @@ class AgenteController {
       }
 
       const {
-        nome, bi, nip, email, senha_hash, status, id_admin
+        nome, bi, nip, email, senha, status, id_admin
       } = req.body;
 
       await agente.update({
-        nome, bi, nip, email, senha_hash, status, id_admin
+        nome, bi, nip, email, senha, status, id_admin
       });
+
+      // transforma em objeto puro e remove senha_hash
+      const agenteSafe = agente.get({ plain: true });
+      delete agenteSafe.senha_hash;
+      delete agenteSafe.senha;
 
       return res.json(agente);
     } catch (e) {
