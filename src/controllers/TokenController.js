@@ -12,13 +12,21 @@ class TokenController {
         return res.status(400).json({ error: 'Email e senha são obrigatórios' });
       }
 
-      // 🔍 Procurar no Admin
-      let user = await Admin.findOne({ where: { email }, raw: true });
+      // 🔍 Procurar Admin (inclui senha_hash)
+      let user = await Admin.scope(null).findOne({
+        where: { email },
+        attributes: ['id_admin', 'nome', 'email', 'senha_hash'],
+        raw: true
+      });
       let userType = 'admin';
 
       if (!user) {
-        // 🔍 Se não for admin, procurar no Agente
-        user = await Agente.findOne({ where: { email }, raw: true });
+        // 🔍 Procurar Agente (inclui senha_hash)
+        user = await Agente.scope(null).findOne({
+          where: { email },
+          attributes: ['id_agente', 'nome', 'email', 'senha_hash'],
+          raw: true
+        });
         userType = 'agente';
       }
 
