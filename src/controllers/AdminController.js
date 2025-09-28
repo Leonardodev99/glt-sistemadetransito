@@ -32,8 +32,59 @@ class AdminController {
     }
   }
 
+  async verPerfil(req, res) {
+    try {
+      if (req.user.type !== 'admin') {
+        return res.status(403).json({ error: 'Acesso negado para não-admins' });
+      }
+
+      const admin = await Admin.findByPk(req.user.id, {
+        attributes: ['id_admin', 'nome', 'email', 'nip', 'createdAt']
+      });
+
+      if (!admin) {
+        return res.status(404).json({ error: 'Admin não encontrado' });
+      }
+
+      return res.json(admin);
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
+  // Atualizar admin (apenas o logado pode alterar seus dados)
+  async update(req, res) {
+    try {
+      if (req.user.type !== 'admin') {
+        return res.status(403).json({ error: 'Acesso negado: apenas admins podem atualizar seus dados' });
+      }
+
+      const admin = await Admin.findByPk(req.user.id);
+      if (!admin) {
+        return res.status(404).json({ error: 'Admin não encontrado' });
+      }
+
+      const {
+        nome, nip, email, senha
+      } = req.body;
+
+      await admin.update({
+        nome, nip, email, senha
+      });
+
+      // transforma em objeto puro e remove senha/senha_hash
+      const adminSafe = admin.get({ plain: true });
+      delete adminSafe.senha_hash;
+      delete adminSafe.senha;
+
+      return res.json(adminSafe);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+  }
+
   // Listar todos os admins
-  async index(req, res) {
+  /* async index(req, res) {
     try {
       const admins = await Admin.findAll();
 
@@ -41,10 +92,10 @@ class AdminController {
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  }
+  } */
 
   // Buscar admin por ID
-  async show(req, res) {
+  /*  async show(req, res) {
     try {
       const { id } = req.params;
       const admin = await Admin.findByPk(id);
@@ -57,38 +108,10 @@ class AdminController {
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  }
-
-  // Atualizar admin
-  async update(req, res) {
-    try {
-      const { id } = req.params;
-
-      const admin = await Admin.findByPk(id);
-      if (!admin) {
-        return res.status(404).json({ error: 'Admin not found' });
-      }
-
-      const {
-        nome, nip, email, senha
-      } = req.body;
-      await admin.update({
-        nome, nip, email, senha
-      });
-
-      // transforma em objeto puro e remove a senha e senha_hash
-      const adminSafe = admin.get({ plain: true });
-      delete adminSafe.senha_hash;
-      delete adminSafe.senha;
-
-      return res.json(admin);
-    } catch (e) {
-      return res.status(400).json({ error: e.message });
-    }
-  }
+  } */
 
   // Deletar admin
-  async delete(req, res) {
+/* async delete(req, res) {
     try {
       const { id } = req.params;
 
@@ -103,7 +126,7 @@ class AdminController {
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  }
+  } */
 }
 
 export default new AdminController();
