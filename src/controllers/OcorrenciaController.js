@@ -8,16 +8,20 @@ class OcorrenciaController {
   // Criar ocorrência
   async store(req, res) {
     try {
+      if (req.user.type !== 'agente') {
+        return res.status(403).json({ error: 'Acesso negado: apenas agentes podem cadastrar ocorrência' });
+      }
+
+      const agente = await Agente.findByPk(req.user.id);
+      if (!agente) {
+        return res.status(404).json({ error: 'Agente inválido ou não encontrado' });
+      }
+
       const {
-        data_hora, localizacao, tipo, descricao, status_sincronizacao, id_agente, id_condutor, id_veiculo
+        data_hora, localizacao, tipo, descricao, status_sincronizacao, id_condutor, id_veiculo
       } = req.body;
 
       // Validações de chaves estrangeiras
-      const agente = await Agente.findByPk(id_agente);
-      if (!agente) {
-        return res.status(400).json({ error: 'Agente inválido ou não encontrado' });
-      }
-
       const condutor = await Condutor.findByPk(id_condutor);
       if (!condutor) {
         return res.status(400).json({ error: 'Condutor inválido ou não encontrado' });
@@ -34,7 +38,7 @@ class OcorrenciaController {
         tipo,
         descricao,
         status_sincronizacao,
-        id_agente,
+        id_agente: req.user.id,
         id_condutor,
         id_veiculo
       });
@@ -145,7 +149,7 @@ class OcorrenciaController {
   }
 
   // Deletar ocorrência
-  async delete(req, res) {
+/*  async delete(req, res) {
     try {
       const { id } = req.params;
 
@@ -159,7 +163,7 @@ class OcorrenciaController {
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  }
+  } */
 }
 
 export default new OcorrenciaController();

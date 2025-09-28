@@ -5,12 +5,8 @@ import AgenteController from '../controllers/AgenteController';
 const router = new Router();
 
 // Rotas CRUD
-router.post('/', authMiddleware, (req, res, next) => {
-  if (req.user.type !== 'admin') {
-    return res.status(403).json({ error: 'Apenas administradores podem realizar esta ação' });
-  }
-  return AgenteController.store(req, res, next);
-});
+router.post('/', authMiddleware, AgenteController.store);
+
 router.get('/', authMiddleware, (req, res, next) => {
   if (req.user.type !== 'admin') {
     return res.status(403).json({ error: 'Apenas administradores podem realizar esta ação' });
@@ -23,7 +19,18 @@ router.get('/:id', authMiddleware, (req, res, next) => {
   }
   return AgenteController.show(req, res, next);
 });
-router.put('/:id', AgenteController.update);
+
+router.get('/ver-perfil', authMiddleware, AgenteController.verPerfil);
+
+router.get('/perfil-update', authMiddleware, AgenteController.profileUpdate);
+
+router.put('/:id', authMiddleware, (req, res, next) => {
+  if (req.user.type !== 'admin') {
+    return res.status(403).json({ error: 'Apenas administradores podem realizar esta ação' });
+  }
+  return AgenteController.update(req, res, next);
+});
+
 // router.delete('/:id', AgenteController.delete);
 
 export default router;

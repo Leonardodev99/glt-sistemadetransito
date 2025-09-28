@@ -19,6 +19,7 @@ routes.get('/', authMiddleware, (req, res, next) => {
 });
 
 routes.get('/:id', authMiddleware, OcorrenciaController.show);
+
 routes.put('/:id', authMiddleware, (req, res, next) => {
   if (req.user.type !== 'agente') {
     return res.status(403).json({ error: 'Apenas agentes podem realizar esta ação' });

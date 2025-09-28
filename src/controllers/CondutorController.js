@@ -72,7 +72,6 @@ class CondutorController {
   }
 
   // Atualizar condutor
-  // Atualizar condutor
   async update(req, res) {
     try {
       const { id } = req.params;
@@ -120,7 +119,7 @@ class CondutorController {
   }
 
   // Deletar condutor
-  async delete(req, res) {
+  /* async delete(req, res) {
     try {
       const { id } = req.params;
 
@@ -135,7 +134,7 @@ class CondutorController {
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  }
+  } */
 
   // Consultar bilhete pelo número do BI
   async consultarBilhete(req, res) {

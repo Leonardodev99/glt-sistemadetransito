@@ -18,6 +18,7 @@ router.get('/', authMiddleware, (req, res, next) => {
   return PagamentoController.index(req, res, next);
 });
 router.get('/:id', authMiddleware, PagamentoController.show);
+
 router.put('/:id', authMiddleware, PagamentoController.update);
 // router.delete('/:id', PagamentoController.delete);
 
